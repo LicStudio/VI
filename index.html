@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Cuánto falta para VI?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plaster&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
+            background: url('https://i.imgur.com/ZcTEuG6.png') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        #app-container { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+
+        .num-text {
+            font-family: 'Plaster', sans-serif;
+            font-size: 82.5px;
+            text-anchor: middle;
+            dominant-baseline: central;
+            letter-spacing: 5px;
+            stroke-linejoin: miter;
+            stroke-miterlimit: 2;
+            filter: drop-shadow(0px 3px 2.25px rgba(0,0,0,0.6));
+        }
+    </style>
+</head>
+<body>
+    <div id="app-container">
+        <svg width="100%" height="100%" viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <defs>
+                <linearGradient id="sunsetGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#4A76C4"/><stop offset="50%" stop-color="#CA428C"/><stop offset="100%" stop-color="#F2AE62"/>
+                </linearGradient>
+                <linearGradient id="midBorderGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#4C0A6E"/><stop offset="100%" stop-color="#C5167A"/>
+                </linearGradient>
+            </defs>
+
+            <!-- Imagen en la esquina -->
+            <g transform="translate(15, 30)">
+                <image xlink:href="https://i.imgur.com/ieJFrjE.png" x="-10" y="-10" width="250" height="180" preserveAspectRatio="xMidYMid meet" opacity="0.9"/>
+            </g>
+
+            <!-- Contador -->
+            <g transform="translate(500, 300)">
+                <text class="num-text" stroke="#220438" stroke-width="12">00:00:00:00</text>
+                <text class="num-text" stroke="url(#midBorderGrad)" stroke-width="7.5">00:00:00:00</text>
+                <text class="num-text" stroke="#FFFFFF" stroke-width="2.25">00:00:00:00</text>
+                <text id="countdown" class="num-text" fill="url(#sunsetGrad)">00:00:00:00</text>
+            </g>
+        </svg>
+    </div>
+
+    <script>
+        const targetDate = new Date("2026-11-19T02:00:00-03:00").getTime();
+        const countdownEl = document.getElementById('countdown');
+        const borderElements = document.querySelectorAll('.num-text[stroke]');
+
+        function updateTimer() {
+            const now = new Date().getTime();
+            let diff = targetDate - now;
+
+            if (diff <= 0) {
+                const finished = "00:00:00:00";
+                countdownEl.textContent = finished;
+                borderElements.forEach(el => el.textContent = finished);
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            const format = (n) => n.toString().padStart(2, '0');
+            const timeString = `${format(days)}:${format(hours)}:${format(minutes)}:${format(seconds)}`;
+            
+            countdownEl.textContent = timeString;
+            borderElements.forEach(el => el.textContent = timeString);
+        }
+
+        setInterval(updateTimer, 1000);
+        updateTimer();
+    </script>
+</body>
+</html>
