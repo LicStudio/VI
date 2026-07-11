@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <link rel="icon" type="image/png" href="favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>¿Cuánto falta para VI?</title>
@@ -23,7 +22,9 @@
             letter-spacing: 5px;
             stroke-linejoin: miter;
             stroke-miterlimit: 2;
-            filter: drop-shadow(0px 3px 2.25px rgba(0,0,0,0.6));
+        }
+        .con-sombra {
+            filter: drop-shadow(0px 0px 4px rgba(0,0,0,0.6));
         }
     </style>
 </head>
@@ -32,7 +33,7 @@
         <svg width="100%" height="100%" viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
             <defs>
                 <linearGradient id="sunsetGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stop-color="#4A76C4"/><stop offset="25%" stop-color="#4A76C4"/><stop offset="50%" stop-color="#CA428C"/><stop offset="75%" stop-color="#F2AE62"/><stop offset="100%" stop-color="#F2AE62"/>
+                    <stop offset="0%" stop-color="#4A76C4"/><stop offset="50%" stop-color="#CA428C"/><stop offset="100%" stop-color="#F2AE62"/>
                 </linearGradient>
                 <linearGradient id="midBorderGrad" x1="0%" y1="0%" x2="0%" y2="100%">
                     <stop offset="0%" stop-color="#4C0A6E"/><stop offset="100%" stop-color="#C5167A"/>
@@ -46,7 +47,7 @@
 
             <!-- Contador -->
             <g transform="translate(500, 300)">
-                <text class="num-text" stroke="#220438" stroke-width="12">00:00:00:00</text>
+                <text class="num-text con-sombra" stroke="#220438" stroke-width="12">00:00:00:00</text>
                 <text class="num-text" stroke="url(#midBorderGrad)" stroke-width="7.5">00:00:00:00</text>
                 <text class="num-text" stroke="#FFFFFF" stroke-width="2.25">00:00:00:00</text>
                 <text id="countdown" class="num-text" fill="url(#sunsetGrad)">00:00:00:00</text>
