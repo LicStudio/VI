@@ -32,7 +32,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0px; /* Espacio de separación entre los números */
+            gap: 5px; /* Espacio de separación entre los números */
             z-index: 10;
         }
 
@@ -61,14 +61,14 @@
     <script>
         // --- CONFIGURACIÓN DEL SPRITESHEET ---
         const ALTURA_ORIGINAL = 1274; // Altura real de tu imagen numlist.png
+        const ANCHO_ORIGINAL = 10003; // Ancho total real de tu imagen numlist.png
         const ALTURA_MOSTRAR = 180;   // Tamaño (en alto) en el que quieres que se vean en pantalla
         
         // El orden exacto en el que aparecen los números en tu imagen (de izquierda a derecha)
         const ORDEN_SPRITES = [9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
 
-        // IMPORTANTE: Como cada número mide distinto horizontalmente, debes definir aquí 
-        // el ANCHO REAL (en píxeles de la imagen original) de cada dígito.
-        // Ve probando y ajustando estos valores hasta que el recorte de cada número sea perfecto.
+        // IMPORTANTE: Sumados, deberían dar los 10003px. Aquí puse un promedio de 1000px por número, 
+        // pero debes ajustarlos (restar a uno y sumar a otro) si notas que un número corta al otro.
         const ANCHOS_ORIGINALES = {
             9: 1034,
             8: 1018,
@@ -115,7 +115,11 @@
                 // Aplicamos la escala al ancho y al desplazamiento
                 const anchoFinal = anchoOriginal * escala;
                 const offsetFinalX = offsetOriginalX * escala;
-                const anchoFondoFinal = anchoTotalImagen * escala;
+                
+                // AQUÍ ESTÁ LA SOLUCIÓN:
+                // Forzamos al tamaño de fondo a usar siempre el ANCHO TOTAL REAL de 10003px escalado.
+                // Esto garantiza que la imagen de fondo jamás se estire o se deforme.
+                const anchoFondoFinal = ANCHO_ORIGINAL * escala; 
                 const altoFondoFinal = ALTURA_MOSTRAR; 
 
                 // Asignamos los estilos para recortar y mostrar exactamente ese dígito
