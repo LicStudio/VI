@@ -33,14 +33,17 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 10; 
+            z-index: 10;
+            gap: 0;
         }
 
         .sprite-digit {
             /* REEMPLAZÁ ESTA URL POR LA RUTA DE TU SPRITE SHEET EN GITHUB PAGES */
             background-image: url('numlist.png'); 
             background-repeat: no-repeat;
-            display: inline-block;
+            display: block; /* Evita los espacios del inline-block */
+            image-rendering: auto; 
+            image-rendering: high-quality;
         }
     </style>
 </head>
@@ -76,7 +79,7 @@
         const spriteTotalWidth = 10003; 
 
         // CONFIGURACIÓN: Modificá este valor para hacer los números más grandes o más chicos en pantalla
-        const targetHeight = 120; // altura en píxeles
+        const targetHeight = 156; // altura en píxeles
 
         // Factor matemático para achicar ancho y posición sin perder proporción
         const scale = targetHeight / spriteOriginalHeight;
@@ -114,7 +117,43 @@
         }
 
         // Llamamos a la función con el texto exacto que pediste
-        renderSpriteText("0123456789", "score-container");
+        // Fecha objetivo: Año 2026, Mes 10 (Noviembre, porque enero es 0), Día 19, 00:00:00 horas
+        const targetDate = new Date(2026, 10, 19, 0, 0, 0); 
+
+        function updateCountdown() {
+            const now = new Date();
+            const diff = targetDate.getTime() - now.getTime();
+
+            // Si ya pasó la fecha, dejamos todo en ceros
+            if (diff <= 0) {
+                renderSpriteText("00 00 00 00", "score-container");
+                return;
+            }
+
+            // Cálculos matemáticos para extraer días, horas, minutos y segundos
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+            // padStart(2, '0') asegura que siempre haya 2 dígitos (ej: "05" en vez de "5")
+            const strD = String(d).padStart(2, '0');
+            const strH = String(h).padStart(2, '0');
+            const strM = String(m).padStart(2, '0');
+            const strS = String(s).padStart(2, '0');
+
+            // Armamos el texto con los espacios en el medio
+            const timeString = `${strD} ${strH} ${strM} ${strS}`;
+            
+            // Dibujamos los sprites
+            renderSpriteText(timeString, "score-container");
+        }
+
+        // Ejecutamos inmediatamente para que no haya retraso al cargar la página
+        updateCountdown();
+        
+        // Actualizamos cada 1 segundo (1000 milisegundos)
+        setInterval(updateCountdown, 1000);
     </script>
 </body>
 </html>
